@@ -1,0 +1,216 @@
+@page
+@model ContactManager.Areas.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-5 col-md-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-success text-white text-center">
+                <h3 class="mb-0">
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                </h3>
+                <p class="mb-0 small">Join us and start managing your contacts</p>
+            </div>
+            <div class="card-body p-4">
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Input.Email" class="form-label">
+                            <i class="fas fa-envelope me-1"></i>Email Address
+                        </label>
+                        <input asp-for="Input.Email" class="form-control form-control-lg" 
+                               placeholder="Enter your email address" autocomplete="username" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        <div class="form-text">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                This will be your username for logging in
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Input.Password" class="form-label">
+                            <i class="fas fa-lock me-1"></i>Password
+                        </label>
+                        <div class="input-group">
+                            <input asp-for="Input.Password" class="form-control form-control-lg" 
+                                   placeholder="Create a strong password" autocomplete="new-password" type="password" id="passwordInput" />
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        <div class="form-text">
+                            <small class="text-muted">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                Password must be at least 6 characters long
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Input.ConfirmPassword" class="form-label">
+                            <i class="fas fa-lock me-1"></i>Confirm Password
+                        </label>
+                        <div class="input-group">
+                            <input asp-for="Input.ConfirmPassword" class="form-control form-control-lg" 
+                                   placeholder="Confirm your password" autocomplete="new-password" type="password" id="confirmPasswordInput" />
+                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <!-- Password Strength Indicator -->
+                    <div class="mb-3">
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar" id="passwordStrength" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        <small class="text-muted" id="passwordStrengthText">Password strength</small>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                        <label class="form-check-label" for="agreeTerms">
+                            I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> and 
+                            <a href="#" class="text-decoration-none">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg" id="registerButton">
+                            <i class="fas fa-user-plus me-1"></i>Create Account
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer bg-light text-center">
+                <p class="mb-0">
+                    Already have an account? 
+                    <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none fw-bold">
+                        Sign in here
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        @if (Model.ExternalLogins?.Count > 0)
+        {
+            <div class="card mt-3">
+                <div class="card-body text-center">
+                    <h6 class="card-title mb-3">Or register with</h6>
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div class="d-grid gap-2">
+                            @foreach (var provider in Model.ExternalLogins)
+                            {
+                                <button type="submit" class="btn btn-outline-secondary" name="provider" value="@provider.Name" title="Register using your @provider.DisplayName account">
+                                    @provider.DisplayName
+                                </button>
+                            }
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle password visibility
+            function setupPasswordToggle(toggleButtonId, passwordInputId) {
+                const toggleButton = document.getElementById(toggleButtonId);
+                const passwordInput = document.getElementById(passwordInputId);
+                
+                if (toggleButton && passwordInput) {
+                    toggleButton.addEventListener('click', function() {
+                        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                        passwordInput.setAttribute('type', type);
+                        
+                        const icon = this.querySelector('i');
+                        if (type === 'password') {
+                            icon.classList.remove('fa-eye-slash');
+                            icon.classList.add('fa-eye');
+                        } else {
+                            icon.classList.remove('fa-eye');
+                            icon.classList.add('fa-eye-slash');
+                        }
+                    });
+                }
+            }
+
+            setupPasswordToggle('togglePassword', 'passwordInput');
+            setupPasswordToggle('toggleConfirmPassword', 'confirmPasswordInput');
+
+            // Password strength indicator
+            const passwordInput = document.getElementById('passwordInput');
+            const strengthBar = document.getElementById('passwordStrength');
+            const strengthText = document.getElementById('passwordStrengthText');
+
+            if (passwordInput && strengthBar && strengthText) {
+                passwordInput.addEventListener('input', function() {
+                    const password = this.value;
+                    let strength = 0;
+                    let strengthLabel = 'Weak';
+                    let strengthClass = 'bg-danger';
+
+                    if (password.length >= 6) strength += 1;
+                    if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 1;
+                    if (password.match(/\d/)) strength += 1;
+                    if (password.match(/[^a-zA-Z\d]/)) strength += 1;
+
+                    const strengthPercentage = (strength / 4) * 100;
+
+                    if (strength >= 3) {
+                        strengthLabel = 'Strong';
+                        strengthClass = 'bg-success';
+                    } else if (strength >= 2) {
+                        strengthLabel = 'Medium';
+                        strengthClass = 'bg-warning';
+                    }
+
+                    strengthBar.style.width = strengthPercentage + '%';
+                    strengthBar.className = 'progress-bar ' + strengthClass;
+                    strengthText.textContent = password ? `Password strength: ${strengthLabel}` : 'Password strength';
+                });
+            }
+
+            // Form validation
+            const form = document.getElementById('registerForm');
+            const registerButton = document.getElementById('registerButton');
+            const agreeTerms = document.getElementById('agreeTerms');
+
+            function validateForm() {
+                const email = document.querySelector('input[name="Input.Email"]').value;
+                const password = document.querySelector('input[name="Input.Password"]').value;
+                const confirmPassword = document.querySelector('input[name="Input.ConfirmPassword"]').value;
+                
+                const isValid = email && password.length >= 6 && password === confirmPassword && agreeTerms.checked;
+                registerButton.disabled = !isValid;
+            }
+
+            // Add event listeners for real-time validation
+            if (form) {
+                ['input', 'change'].forEach(eventType => {
+                    form.addEventListener(eventType, validateForm);
+                });
+                
+                validateForm(); // Initial check
+            }
+
+            // Focus on email input
+            const emailInput = document.querySelector('input[name="Input.Email"]');
+            if (emailInput) {
+                emailInput.focus();
+            }
+        });
+    </script>
+}

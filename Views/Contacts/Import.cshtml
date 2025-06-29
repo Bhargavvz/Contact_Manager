@@ -1,0 +1,141 @@
+@{
+    ViewData["Title"] = "Import Contacts";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-10">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-gradient-primary text-white py-4">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h2 class="mb-0">
+                                <i class="fas fa-file-import me-3"></i>Import Contacts
+                            </h2>
+                            <p class="mb-0 mt-2 opacity-90">Import your contacts from XML file</p>
+                        </div>
+                        <div class="col-auto">
+                            <a asp-action="Index" class="btn btn-light btn-lg">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Contacts
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-5">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Import Failed!</strong>
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <div>@error.ErrorMessage</div>
+                            }
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <form asp-action="ImportXml" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                                <div class="mb-4">
+                                    <label for="xmlFile" class="form-label fs-5 fw-semibold">
+                                        <i class="fas fa-file-code me-2 text-primary"></i>Select XML File
+                                    </label>
+                                    <input type="file" 
+                                           id="xmlFile" 
+                                           name="xmlFile" 
+                                           class="form-control form-control-lg"
+                                           accept=".xml"
+                                           required>
+                                    <div class="form-text">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Choose an XML file containing contact data. Duplicates (same email) will be skipped.
+                                    </div>
+                                </div>
+
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                                        <i class="fas fa-upload me-2"></i>Import Contacts
+                                    </button>
+                                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg px-4">
+                                        <i class="fas fa-times me-2"></i>Cancel
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card bg-light border-0 h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">
+                                        <i class="fas fa-lightbulb me-2"></i>Import Tips
+                                    </h5>
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="mb-2">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            XML files only
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            Duplicates are automatically skipped
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            Data is validated before import
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-download text-info me-2"></i>
+                                            <a asp-action="ExportXml" class="text-decoration-none">
+                                                Download sample XML
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card {
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-2px);
+}
+</style>
+
+<script>
+// File validation
+document.getElementById('xmlFile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        if (!file.name.toLowerCase().endsWith('.xml')) {
+            alert('Please select a valid XML file.');
+            e.target.value = '';
+        }
+    }
+});
+</script>

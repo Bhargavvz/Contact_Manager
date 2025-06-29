@@ -1,0 +1,398 @@
+﻿@{
+    ViewData["Title"] = "Contact Manager - Professional Contact Management";
+}
+
+<div class="hero-section text-white py-5">
+    <div class="container">
+        <div class="row align-items-center min-vh-50">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="display-3 fw-bold mb-4 animate-fade-in">
+                        Professional Contact Manager
+                    </h1>
+                    <p class="lead mb-4 animate-fade-in-delay">
+                        Organize, manage, and stay connected with your contacts effortlessly. 
+                        A modern, secure, and feature-rich contact management solution with XML import/export capabilities.
+                    </p>
+                    <div class="d-flex flex-column flex-sm-row gap-3 animate-fade-in-delay-2">
+                        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-light btn-lg px-5 rounded-pill shadow-lg btn-hover">
+                            <i class="fas fa-rocket me-2"></i>Get Started Free
+                        </a>
+                        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-light btn-lg px-5 rounded-pill">
+                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image animate-float">
+                    <div class="hero-icon-container">
+                        <i class="fas fa-address-book display-1 hero-icon"></i>
+                        <div class="floating-dots">
+                            <div class="dot dot-1"></div>
+                            <div class="dot dot-2"></div>
+                            <div class="dot dot-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold mb-3">Why Choose Our Contact Manager?</h2>
+                <p class="lead text-muted">Everything you need to manage your contacts professionally</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-lock fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Secure & Private</h4>
+                        <p class="card-text text-muted">
+                            Your contacts are private and secure. Each user has their own protected space 
+                            with modern authentication and data encryption.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-success text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-search fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Smart Search</h4>
+                        <p class="card-text text-muted">
+                            Find contacts instantly with our powerful search functionality. 
+                            Search by name, email, phone, or filter by favorites.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-info text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-mobile-alt fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Mobile Responsive</h4>
+                        <p class="card-text text-muted">
+                            Access your contacts anywhere, anytime. Our responsive design 
+                            works perfectly on desktop, tablet, and mobile devices.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-warning text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-heart fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Favorites System</h4>
+                        <p class="card-text text-muted">
+                            Mark important contacts as favorites for quick access. 
+                            Organize your most important connections efficiently.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-lg rounded-4 card-hover">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary bg-opacity-10 rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-download fa-2x text-primary"></i>
+                        </div>
+                        <h4 class="card-title fw-bold">XML Import/Export</h4>
+                        <p class="card-text text-muted">
+                            Import and export your contacts in XML format for easy data migration 
+                            and backup. Advanced data portability features.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-secondary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-image fa-2x"></i>
+                        </div>
+                        <h4 class="card-title">Profile Photos</h4>
+                        <p class="card-text text-muted">
+                            Add profile photos to your contacts for easy recognition. 
+                            Visual contact management made simple and elegant.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cta-section bg-light py-5">
+    <div class="container text-center">
+        <h2 class="display-6 fw-bold mb-3">Ready to Get Organized?</h2>
+        <p class="lead text-muted mb-4">
+            Start managing your contacts professionally today. Free to use, easy to master.
+        </p>
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary btn-lg px-5">
+            <i class="fas fa-rocket me-2"></i>Start Free Now
+        </a>
+    </div>
+</div>
+
+<style>
+/* Modern Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+    min-height: 70vh;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></svg>') repeat;
+    background-size: 50px 50px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.min-vh-50 {
+    min-height: 50vh;
+}
+
+/* Modern Animations */
+@@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@@keyframes float {
+    0%, 100% { 
+        transform: translateY(0px) rotate(0deg); 
+    }
+    33% { 
+        transform: translateY(-20px) rotate(2deg); 
+    }
+    66% { 
+        transform: translateY(-10px) rotate(-1deg); 
+    }
+}
+
+@@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.7;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.animate-fade-in-delay {
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.animate-fade-in-delay-2 {
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Hero Icon */
+.hero-icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.hero-icon {
+    font-size: 8rem;
+    color: rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+}
+
+.floating-dots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: pulse 3s ease-in-out infinite;
+}
+
+.dot-1 {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.dot-2 {
+    top: 60%;
+    right: 30%;
+    animation-delay: 1s;
+}
+
+.dot-3 {
+    bottom: 30%;
+    left: 40%;
+    animation-delay: 2s;
+}
+
+/* Modern Cards */
+.card-hover {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-hover:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+.feature-icon {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Modern Buttons */
+.btn-hover {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-hover:hover::before {
+    left: 100%;
+}
+
+.btn-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Rounded Pills */
+.rounded-pill {
+    border-radius: 50px !important;
+}
+
+.rounded-4 {
+    border-radius: 1rem !important;
+}
+
+/* Feature Cards Grid */
+.features-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    position: relative;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 100,50 50,100 0,50" fill="rgba(102,126,234,0.03)"/></svg>') repeat;
+    background-size: 100px 100px;
+}
+
+/* Responsive Design */
+@@media (max-width: 768px) {
+    .hero-icon {
+        font-size: 5rem;
+    }
+    
+    .display-3 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-section {
+        min-height: 60vh;
+    }
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Loading Animation */
+@@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: shimmer 2s infinite;
+}
+</style>

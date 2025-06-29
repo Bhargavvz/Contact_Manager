@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  contactmanager:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Data Source=/app/data/contacts.db
+    volumes:
+      - contact_data:/app/data
+      - contact_uploads:/app/wwwroot/uploads
+    restart: unless-stopped
+    container_name: contact-manager
+
+volumes:
+  contact_data:
+  contact_uploads:

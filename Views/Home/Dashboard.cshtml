@@ -1,0 +1,459 @@
+@model DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <!-- Modern Welcome Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-body p-0">
+                    <div class="bg-gradient-primary text-white p-4 p-md-5">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="avatar-lg bg-white bg-opacity-20 rounded-circle d-flex align-items-center justify-content-center me-4">
+                                        <i class="fas fa-user-circle fa-3x text-white"></i>
+                                    </div>
+                                    <div>
+                                        <h1 class="h2 mb-1 fw-bold">Welcome back, @User.Identity!.Name!</h1>
+                                        <p class="mb-0 opacity-90 fs-5">Ready to manage your contacts professionally?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 text-lg-end">
+                                <div class="d-flex flex-column flex-lg-row gap-2 justify-content-lg-end">
+                                    <a asp-controller="Contacts" asp-action="Create" class="btn btn-light btn-lg px-4 shadow-sm">
+                                        <i class="fas fa-plus me-2"></i>Add Contact
+                                    </a>
+                                    <a asp-controller="Contacts" asp-action="Index" class="btn btn-outline-light btn-lg px-4">
+                                        <i class="fas fa-users me-2"></i>View All
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Statistics Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-lg rounded-4 h-100 card-hover">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="avatar-md bg-primary bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-users fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted text-uppercase fw-semibold mb-1">Total Contacts</h6>
+                            <h2 class="mb-0 fw-bold text-dark">@Model.TotalContacts</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-lg rounded-4 h-100 card-hover">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="avatar-md bg-success bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-heart fa-2x text-success"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted text-uppercase fw-semibold mb-1">Favorites</h6>
+                            <h2 class="mb-0 fw-bold text-dark">@Model.FavoriteContacts</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-lg rounded-4 h-100 card-hover">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="avatar-md bg-info bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-calendar-plus fa-2x text-info"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted text-uppercase fw-semibold mb-1">This Month</h6>
+                            <h2 class="mb-0 fw-bold text-dark">@Model.ContactsAddedThisMonth</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="card border-0 shadow-lg rounded-4 h-100 card-hover">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="avatar-md bg-warning bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center">
+                                <i class="fas fa-chart-line fa-2x text-warning"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="text-muted text-uppercase fw-semibold mb-1">Growth Rate</h6>
+                            <h2 class="mb-0 fw-bold text-dark">
+                                @if (Model.TotalContacts > 0)
+                                {
+                                    <span>+@Math.Round((double)Model.ContactsAddedThisMonth / Model.TotalContacts * 100, 1)%</span>
+                                }
+                                else
+                                {
+                                    <span>0%</span>
+                                }
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="row g-4">
+        <!-- Recent Contacts -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card border-0 shadow-lg rounded-4 h-100">
+                <div class="card-header bg-transparent border-0 p-4 pb-0">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-clock text-primary me-2"></i>Recent Contacts
+                        </h5>
+                        <a asp-controller="Contacts" asp-action="Index" class="btn btn-sm btn-outline-primary rounded-3">
+                            View All <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    @if (Model.RecentContacts.Any())
+                    {
+                        <div class="space-y-3">
+                            @foreach (var contact in Model.RecentContacts)
+                            {
+                                <div class="d-flex align-items-center p-3 bg-light rounded-3 contact-item">
+                                    <div class="flex-shrink-0">
+                                        @if (!string.IsNullOrEmpty(contact.ProfilePhotoPath))
+                                        {
+                                            <img src="@contact.ProfilePhotoPath" alt="@contact.Name" 
+                                                 class="rounded-circle shadow-sm" style="width: 48px; height: 48px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" 
+                                                 style="width: 48px; height: 48px; font-weight: 600;">
+                                                @contact.Name.Substring(0, 1).ToUpper()
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <div class="d-flex align-items-center">
+                                            <h6 class="mb-0 fw-semibold">@contact.Name</h6>
+                                            @if (contact.IsFavorite)
+                                            {
+                                                <i class="fas fa-heart text-danger ms-2" title="Favorite"></i>
+                                            }
+                                        </div>
+                                        <p class="mb-0 text-muted small">@contact.Email</p>
+                                        <p class="mb-0 text-muted small">@contact.Phone</p>
+                                    </div>
+                                    <div class="flex-shrink-0 text-end">
+                                        <small class="text-muted d-block">@contact.DateCreated.ToString("MMM dd")</small>
+                                        <div class="btn-group mt-1" role="group">
+                                            <a asp-controller="Contacts" asp-action="Details" asp-route-id="@contact.Id" 
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a asp-controller="Contacts" asp-action="Edit" asp-route-id="@contact.Id" 
+                                               class="btn btn-sm btn-outline-secondary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (contact != Model.RecentContacts.Last())
+                                {
+                                    <hr class="my-2">
+                                }
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                            <h6 class="text-muted">No recent contacts</h6>
+                            <p class="text-muted mb-4">Start by adding your first contact</p>
+                            <a asp-controller="Contacts" asp-action="Create" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Add Contact
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div> 
+        
+        <!-- Right Column -->
+        <div class="col-xl-4 col-lg-5">
+            <!-- Favorite Contacts -->
+            <div class="card border-0 shadow-lg rounded-4 mb-4">
+                <div class="card-header bg-transparent border-0 p-4 pb-0">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-heart text-danger me-2"></i>Favorite Contacts
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    @if (Model.FavoriteContactsList.Any())
+                    {
+                        <div class="space-y-3">
+                            @foreach (var contact in Model.FavoriteContactsList)
+                            {
+                                <div class="d-flex align-items-center p-3 bg-light rounded-3 contact-item">
+                                    <div class="flex-shrink-0">
+                                        @if (!string.IsNullOrEmpty(contact.ProfilePhotoPath))
+                                        {
+                                            <img src="@contact.ProfilePhotoPath" alt="@contact.Name" 
+                                                 class="rounded-circle shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" 
+                                                 style="width: 40px; height: 40px; font-weight: 600; font-size: 0.9rem;">
+                                                @contact.Name.Substring(0, 1).ToUpper()
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-1 fw-semibold">@contact.Name</h6>
+                                        <p class="mb-0 text-muted small">@contact.Email</p>
+                                        <p class="mb-0 text-muted small">@contact.Phone</p>
+                                    </div>
+                                    <div class="flex-shrink-0">
+                                        <a asp-controller="Contacts" asp-action="Details" asp-route-id="@contact.Id" 
+                                           class="btn btn-sm btn-outline-primary rounded-3">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                @if (contact != Model.FavoriteContactsList.Last())
+                                {
+                                    <hr class="my-2">
+                                }
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="fas fa-heart fa-3x text-muted mb-3"></i>
+                            <h6 class="text-muted">No favorites yet</h6>
+                            <p class="text-muted mb-0">Mark contacts as favorites to see them here</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="card border-0 shadow-lg rounded-4">
+                <div class="card-header bg-transparent border-0 p-4 pb-0">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="fas fa-bolt text-warning me-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-grid gap-3">
+                        <a asp-controller="Contacts" asp-action="ExportCsv" class="btn btn-outline-success btn-lg rounded-3">
+                            <i class="fas fa-file-csv me-2"></i>Export to CSV
+                        </a>
+                        <a asp-controller="Contacts" asp-action="ExportXml" class="btn btn-outline-info btn-lg rounded-3">
+                            <i class="fas fa-file-code me-2"></i>Export to XML
+                        </a>
+                        <a asp-controller="Contacts" asp-action="Import" class="btn btn-outline-primary btn-lg rounded-3">
+                            <i class="fas fa-file-import me-2"></i>Import from XML
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modern CSS Styles -->
+<style>
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-gradient-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="none"><path d="M0,20 Q250,0 500,20 T1000,20 L1000,100 L0,100 Z" fill="rgba(255,255,255,0.1)"/></svg>') no-repeat bottom;
+    background-size: cover;
+    pointer-events: none;
+}
+
+.avatar-lg {
+    width: 60px;
+    height: 60px;
+}
+
+.avatar-md {
+    width: 50px;
+    height: 50px;
+}
+
+.card {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.card-hover {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+    border-color: rgba(0,0,0,0.1);
+}
+
+/* Statistics cards enhancement */
+.col-xl-3 .card-body {
+    position: relative;
+    overflow: hidden;
+}
+
+.col-xl-3 .card-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.contact-item {
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%) !important;
+}
+
+.contact-item:hover {
+    background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%) !important;
+    border-color: #90caf9;
+    transform: translateX(8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.space-y-3 > * + * {
+    margin-top: 0.75rem;
+}
+
+.btn {
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border-width: 2px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-lg {
+    padding: 12px 24px;
+    font-size: 1rem;
+}
+
+/* Quick Actions buttons enhancement */
+.btn-outline-success:hover {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.btn-outline-info:hover {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.rounded-3 {
+    border-radius: 0.75rem !important;
+}
+
+.rounded-4 {
+    border-radius: 1rem !important;
+}
+
+.text-decoration-none:hover {
+    text-decoration: underline !important;
+}
+
+/* Responsive improvements */
+@@media (max-width: 768px) {
+    .card-hover:hover {
+        transform: translateY(-4px);
+    }
+    
+    .contact-item:hover {
+        transform: translateX(4px);
+    }
+    
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+    
+    .bg-gradient-primary::before {
+        display: none;
+    }
+}
+
+@@media (max-width: 576px) {
+    .card-hover:hover {
+        transform: none;
+    }
+    
+    .contact-item:hover {
+        transform: none;
+    }
+    
+    .btn:hover {
+        transform: none;
+    }
+}
+</style>

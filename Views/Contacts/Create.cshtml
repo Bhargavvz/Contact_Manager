@@ -1,0 +1,250 @@
+@model ContactManager.ViewModels.ContactCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Contact";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-xl-8 col-lg-10">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-success text-white py-3">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i>Create New Contact
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data" id="contactForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                        
+                        <!-- Profile Photo Upload Section -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-muted mb-3">
+                                    <i class="fas fa-camera me-2"></i>Profile Photo
+                                </h6>
+                                <div class="d-flex align-items-center">
+                                    <div id="photoPreview" class="me-3 d-flex align-items-center justify-content-center bg-light rounded-circle" style="width: 80px; height: 80px;">
+                                        <i class="fas fa-user fa-2x text-muted"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <input type="file" asp-for="ProfilePhoto" class="form-control" id="profilePhotoInput" accept="image/*" />
+                                        <small class="form-text text-muted">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Upload a profile photo (optional). Supported formats: JPG, PNG, GIF. Max size: 5MB.
+                                        </small>
+                                        <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Personal Information Section -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h6 class="text-muted mb-3">
+                                    <i class="fas fa-user me-2"></i>Personal Information
+                                </h6>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Name" class="form-label required">
+                                    <i class="fas fa-id-card me-1"></i>Full Name
+                                </label>
+                                <input asp-for="Name" class="form-control" placeholder="Enter full name" required />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label required">
+                                    <i class="fas fa-envelope me-1"></i>Email Address
+                                </label>
+                                <input asp-for="Email" class="form-control" type="email" placeholder="Enter email address" required />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Phone" class="form-label required">
+                                    <i class="fas fa-phone me-1"></i>Phone Number
+                                </label>
+                                <input asp-for="Phone" class="form-control" type="tel" placeholder="Enter phone number" required />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    <i class="fas fa-calendar me-1"></i>Date Added
+                                </label>
+                                <input type="text" class="form-control" value="@DateTime.Now.ToString("MMM dd, yyyy")" readonly />
+                                <small class="form-text text-muted">Automatically set to current date</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label">
+                                <i class="fas fa-map-marker-alt me-1"></i>Address
+                            </label>
+                            <textarea asp-for="Address" class="form-control" rows="3" placeholder="Enter address (optional)"></textarea>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input asp-for="IsFavorite" class="form-check-input" type="checkbox" />
+                                    <label asp-for="IsFavorite" class="form-check-label">
+                                        <i class="fas fa-star text-warning me-1"></i>Mark as Favorite
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <small class="text-muted">* Required fields</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Back to List
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-1"></i>Save Contact
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.required::after {
+    content: " *";
+    color: #dc3545;
+}
+
+.form-control:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+}
+
+#photoPreview img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.form-check-input:checked {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+</style>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle profile photo preview
+            const photoInput = document.getElementById('profilePhotoInput');
+            const photoPreview = document.getElementById('photoPreview');
+            
+            photoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Validate file size (5MB limit)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('File size must be less than 5MB');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    // Validate file type
+                    if (!file.type.startsWith('image/')) {
+                        alert('Please select a valid image file');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        photoPreview.innerHTML = `<img src="${e.target.result}" class="rounded-circle" alt="Preview" />`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    photoPreview.innerHTML = '<i class="fas fa-user fa-2x text-muted"></i>';
+                }
+            });
+
+            // Enhanced form validation
+            const form = document.getElementById('contactForm');
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                const requiredFields = ['Name', 'Email', 'Phone'];
+                
+                requiredFields.forEach(function(field) {
+                    const input = document.querySelector(`[name="${field}"]`);
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.classList.add('is-invalid');
+                    } else {
+                        input.classList.remove('is-invalid');
+                    }
+                });
+
+                // Email validation
+                const emailInput = document.querySelector('[name="Email"]');
+                if (emailInput.value && !emailInput.checkValidity()) {
+                    isValid = false;
+                    emailInput.classList.add('is-invalid');
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                    const firstInvalid = document.querySelector('.is-invalid');
+                    if (firstInvalid) {
+                        firstInvalid.focus();
+                        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+
+            // Real-time validation
+            document.querySelectorAll('input[required]').forEach(function(input) {
+                input.addEventListener('blur', function() {
+                    if (this.value.trim()) {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    }
+                });
+                
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('is-invalid') && this.value.trim()) {
+                        this.classList.remove('is-invalid');
+                    }
+                });
+            });
+
+            // Auto-format phone number (basic)
+            const phoneInput = document.querySelector('[name="Phone"]');
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 6) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{0,4})/, '($1) $2-$3');
+                } else if (value.length >= 3) {
+                    value = value.replace(/(\d{3})(\d{0,3})/, '($1) $2');
+                }
+                e.target.value = value;
+            });
+        });
+    </script>
+}

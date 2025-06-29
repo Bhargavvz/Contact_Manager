@@ -1,0 +1,476 @@
+@model ContactManager.Models.Contact
+
+@{
+    ViewData["Title"] = $"Contact Details - {Model.Name}";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-lg">
+                <div class="card-header bg-info text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user me-2"></i>Contact Details
+                        </h4>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-light btn-sm me-2">
+                                <i class="fas fa-edit me-1"></i>Edit
+                            </a>
+                            <a asp-action="Index" class="btn btn-outline-light btn-sm">
+                                <i class="fas fa-arrow-left me-1"></i>Back to Contacts
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Profile Section -->
+                <div class="card-body p-0">
+                    <div class="bg-gradient text-white p-4" style="background: linear-gradient(135deg, #17a2b8, #20c997);">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                @if (!string.IsNullOrEmpty(Model.ProfilePhotoPath))
+                                {
+                                    <img src="@Model.ProfilePhotoPath" alt="@Model.Name" 
+                                         class="rounded-circle border border-3 border-white shadow" 
+                                         style="width: 100px; height: 100px; object-fit: cover;" />
+                                }
+                                else
+                                {
+                                    <div class="rounded-circle border border-3 border-white bg-primary text-white d-flex align-items-center justify-content-center shadow" 
+                                         style="width: 100px; height: 100px; font-size: 2.5rem; font-weight: bold;">
+                                        @Model.Name.Substring(0, 1).ToUpper()
+                                    </div>
+                                }
+                            </div>
+                            <div class="col">
+                                <div class="d-flex align-items-center mb-2">
+                                    <h2 class="mb-0 me-3">@Model.Name</h2>
+                                    @if (Model.IsFavorite)
+                                    {
+                                        <span class="badge bg-danger fs-6">
+                                            <i class="fas fa-heart me-1"></i>Favorite
+                                        </span>
+                                    }
+                                </div>
+                                <p class="mb-1 opacity-75">
+                                    <i class="fas fa-calendar-plus me-2"></i>
+                                    Added on @Model.DateCreated.ToString("MMMM dd, yyyy 'at' hh:mm tt")
+                                </p>
+                                <p class="mb-0 opacity-75">
+                                    <i class="fas fa-clock me-2"></i>
+                                    Last updated @Model.LastModified.ToString("MMMM dd, yyyy 'at' hh:mm tt")
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information Cards -->
+                    <div class="p-4">
+                        <div class="row g-4 mb-4">
+                            <!-- Email Card -->
+                            <div class="col-md-6">
+                                <div class="card bg-light border-0 h-100 contact-info-card">
+                                    <div class="card-body text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-envelope fa-2x text-primary"></i>
+                                        </div>
+                                        <h6 class="card-title text-uppercase text-muted mb-2">Email Address</h6>
+                                        <p class="card-text fw-bold mb-3">@Model.Email</p>
+                                        <div class="d-grid gap-2">
+                                            <a href="mailto:@Model.Email" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-envelope me-1"></i>Send Email
+                                            </a>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm copy-btn" 
+                                                    data-copy-text="@Model.Email">
+                                                <i class="fas fa-copy me-1"></i>Copy Email
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Phone Card -->
+                            <div class="col-md-6">
+                                <div class="card bg-light border-0 h-100 contact-info-card">
+                                    <div class="card-body text-center">
+                                        <div class="mb-3">
+                                            <i class="fas fa-phone fa-2x text-success"></i>
+                                        </div>
+                                        <h6 class="card-title text-uppercase text-muted mb-2">Phone Number</h6>
+                                        <p class="card-text fw-bold mb-3">@Model.Phone</p>
+                                        <div class="d-grid gap-2">
+                                            <a href="tel:@Model.Phone" class="btn btn-success btn-sm">
+                                                <i class="fas fa-phone me-1"></i>Call Now
+                                            </a>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm copy-btn" 
+                                                    data-copy-text="@Model.Phone">
+                                                <i class="fas fa-copy me-1"></i>Copy Phone
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.Address))
+                        {
+                            <!-- Address Card -->
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="card bg-light border-0 contact-info-card">
+                                        <div class="card-body">
+                                            <div class="row align-items-center">
+                                                <div class="col-auto">
+                                                    <i class="fas fa-map-marker-alt fa-2x text-info"></i>
+                                                </div>
+                                                <div class="col">
+                                                    <h6 class="card-title text-uppercase text-muted mb-2">Address</h6>
+                                                    <p class="card-text fw-bold mb-2">@Model.Address</p>
+                                                    <div class="btn-group">
+                                                        <a href="https://maps.google.com/?q=@Uri.EscapeDataString(Model.Address)" 
+                                                           target="_blank" class="btn btn-info btn-sm">
+                                                            <i class="fas fa-map me-1"></i>View on Map
+                                                        </a>
+                                                        <button type="button" class="btn btn-outline-secondary btn-sm copy-btn" 
+                                                                data-copy-text="@Model.Address">
+                                                            <i class="fas fa-copy me-1"></i>Copy Address
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Quick Actions -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card border-primary">
+                                    <div class="card-header bg-primary text-white">
+                                        <h6 class="mb-0">
+                                            <i class="fas fa-bolt me-2"></i>Quick Actions
+                                        </h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row g-3">
+                                            <div class="col-md-3 col-6">
+                                                <button type="button" class="btn btn-outline-primary w-100 favorite-btn" 
+                                                        data-contact-id="@Model.Id" 
+                                                        data-is-favorite="@Model.IsFavorite.ToString().ToLower()">
+                                                    <i class="@(Model.IsFavorite ? "fas fa-heart-broken" : "fas fa-heart")"></i>
+                                                    <div class="mt-1 small">
+                                                        @(Model.IsFavorite ? "Remove Favorite" : "Add to Favorites")
+                                                    </div>
+                                                </button>
+                                            </div>
+                                            <div class="col-md-3 col-6">
+                                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning w-100">
+                                                    <i class="fas fa-edit"></i>
+                                                    <div class="mt-1 small">Edit Contact</div>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-3 col-6">
+                                                <button type="button" class="btn btn-outline-info w-100" id="shareBtn">
+                                                    <i class="fas fa-share"></i>
+                                                    <div class="mt-1 small">Share Contact</div>
+                                                </button>
+                                            </div>
+                                            <div class="col-md-3 col-6">
+                                                <button type="button" class="btn btn-outline-danger w-100 delete-btn" 
+                                                        data-contact-id="@Model.Id" 
+                                                        data-contact-name="@Model.Name">
+                                                    <i class="fas fa-trash"></i>
+                                                    <div class="mt-1 small">Delete Contact</div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirm Delete
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong id="contactNameToDelete"></strong>?</p>
+                <p class="text-muted">This action cannot be undone and all contact information will be permanently removed.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+                <form id="deleteForm" method="post" style="display: inline;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>Delete Contact
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Share Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="shareModalLabel">
+                    <i class="fas fa-share me-2"></i>Share Contact
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Contact Information:</h6>
+                <div class="bg-light p-3 rounded">
+                    <div><strong>Name:</strong> @Model.Name</div>
+                    <div><strong>Email:</strong> @Model.Email</div>
+                    <div><strong>Phone:</strong> @Model.Phone</div>
+                    @if (!string.IsNullOrEmpty(Model.Address))
+                    {
+                        <div><strong>Address:</strong> @Model.Address</div>
+                    }
+                </div>
+                <div class="mt-3">
+                    <button type="button" class="btn btn-primary" id="copyContactInfo">
+                        <i class="fas fa-copy me-1"></i>Copy Contact Information
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="copyToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong class="me-auto">Success</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body" id="toastMessage">
+            Copied to clipboard!
+        </div>
+    </div>
+</div>
+
+<style>
+.contact-info-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.contact-info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.bg-gradient {
+    background: linear-gradient(135deg, #17a2b8, #20c997) !important;
+}
+</style>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle favorite toggle
+            const favoriteBtn = document.querySelector('.favorite-btn');
+            if (favoriteBtn) {
+                favoriteBtn.addEventListener('click', function() {
+                    const contactId = this.getAttribute('data-contact-id');
+                    const isFavorite = this.getAttribute('data-is-favorite') === 'true';
+                    
+                    fetch('@Url.Action("ToggleFavorite", "Contacts")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                        },
+                        body: JSON.stringify({ id: contactId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload(); // Refresh to show updated favorite status
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                });
+            }
+
+            // Handle delete confirmation
+            const deleteBtn = document.querySelector('.delete-btn');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', function() {
+                    const contactId = this.getAttribute('data-contact-id');
+                    const contactName = this.getAttribute('data-contact-name');
+                    
+                    document.getElementById('contactNameToDelete').textContent = contactName;
+                    document.getElementById('deleteForm').action = '@Url.Action("Delete", "Contacts")/' + contactId;
+                    
+                    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+                });
+            }
+
+            // Handle share button
+            const shareBtn = document.getElementById('shareBtn');
+            if (shareBtn) {
+                shareBtn.addEventListener('click', function() {
+                    new bootstrap.Modal(document.getElementById('shareModal')).show();
+                });
+            }
+
+            // Handle copy buttons
+            document.querySelectorAll('.copy-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const textToCopy = this.getAttribute('data-copy-text');
+                    copyToClipboard(textToCopy, 'Copied to clipboard!');
+                });
+            });
+
+            // Handle copy contact info
+            const copyContactBtn = document.getElementById('copyContactInfo');
+            if (copyContactBtn) {
+                copyContactBtn.addEventListener('click', function() {
+                    const contactInfo = `Name: @Model.Name\nEmail: @Model.Email\nPhone: @Model.Phone@(!string.IsNullOrEmpty(Model.Address) ? $"\nAddress: {Model.Address}" : "")`;
+                    copyToClipboard(contactInfo, 'Contact information copied!');
+                    bootstrap.Modal.getInstance(document.getElementById('shareModal')).hide();
+                });
+            }
+
+            // Copy to clipboard function
+            function copyToClipboard(text, message) {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text).then(function() {
+                        showToast(message);
+                    }).catch(function() {
+                        fallbackCopyToClipboard(text, message);
+                    });
+                } else {
+                    fallbackCopyToClipboard(text, message);
+                }
+            }
+
+            // Fallback copy method
+            function fallbackCopyToClipboard(text, message) {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast(message);
+                } catch (err) {
+                    console.error('Copy failed', err);
+                }
+                document.body.removeChild(textArea);
+            }
+
+            // Show toast notification
+            function showToast(message) {
+                document.getElementById('toastMessage').textContent = message;
+                const toast = new bootstrap.Toast(document.getElementById('copyToast'));
+                toast.show();
+            }
+        });
+    </script>
+}
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title text-primary">
+                                        <i class="fas fa-phone me-2"></i>Phone Number
+                                    </h6>
+                                    <p class="card-text">
+                                        <a href="tel:@Model.Phone" class="text-decoration-none">
+                                            @Model.Phone
+                                        </a>
+                                    </p>
+                                    <a href="tel:@Model.Phone" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-phone me-1"></i>Call Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Address))
+                    {
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-primary">
+                                            <i class="fas fa-map-marker-alt me-2"></i>Address
+                                        </h6>
+                                        <p class="card-text">@Model.Address</p>
+                                        <a href="https://maps.google.com/?q=@Uri.EscapeDataString(Model.Address)" 
+                                           target="_blank" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-map me-1"></i>View on Map
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title text-primary">
+                                        <i class="fas fa-info-circle me-2"></i>Additional Information
+                                    </h6>
+                                    <p class="card-text">
+                                        <strong>Contact ID:</strong> #@Model.Id<br>
+                                        <strong>Date Added:</strong> @Model.DateCreated.ToString("MMMM dd, yyyy 'at' h:mm tt")
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Back to List
+                        </a>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">
+                                <i class="fas fa-edit me-1"></i>Edit Contact
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">
+                                <i class="fas fa-trash me-1"></i>Delete Contact
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
